@@ -1,0 +1,34 @@
+server:
+  port: 8080
+
+
+
+mybatis:
+  #mapper配置文件
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.entity
+  configuration:
+    #开启驼峰命名
+    map-underscore-to-camel-case: true
+spring:
+  main:
+    allow-circular-references: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: 123456
+    username: root
+    url: jdbc:mysql://localhost:3306/TPCBenchmark?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+example:
+
+    jwt:
+        # 设置jwt签名加密时使用的秘钥
+        admin-secret-key: admin
+        # 设置jwt过期时间
+        admin-ttl: 7200000
+        # 设置前端传递过来的令牌名称
+        admin-token-name: token
+
+        user-secret-key: user
+        user-ttl: 7200000
+        user-token-name: authentication
+
