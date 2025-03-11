@@ -1,5 +1,5 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators'
-import { login,userLogout } from '@/api/employee'
+import { login,userLogout } from '@/api/user'
 import { getToken, setToken, removeToken,getStoreId, setStoreId, removeStoreId, setUserInfo, getUserInfo, removeUserInfo } from '@/utils/cookies'
 import store from '@/store'
 import Cookies from 'js-cookie'
