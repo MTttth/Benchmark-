@@ -7,7 +7,7 @@ import request from '@/utils/request'
 // 登录、
 export const login = (data: any) =>
   request({
-    'url': '/employee/login',
+    'url': '/user/login',
     'method': 'post',
     data
   })

@@ -67,20 +67,13 @@ class User extends VuexModule implements IUserState {
     }
 
   @Action
-  public async Login(userInfo: { username: string, password: string }) {
-    let { username, password } = userInfo
+  public async Login(userInfo: { username: string, password: string, type: number }) {
+    let { username, password, type } = userInfo
     username = username.trim()
     this.SET_USERNAME(username)
     Cookies.set('username', username)
-    const { data } = await login({ username, password })
+    const { data } = await login({ username, password,type })
     if (String(data.code) === '1') {
-      // const dataParams = {
-      //   // status: 200,
-      //   token: data.data.token,
-      //   // msg: '登录成功',
-      //   // ...data.data
-      //   ...data
-      // }
       this.SET_TOKEN(data.data.token)
       setToken(data.data.token)
       this.SET_USERINFO(data.data)
