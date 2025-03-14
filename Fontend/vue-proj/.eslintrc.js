@@ -12,8 +12,8 @@ module.exports = {
     '@vue/typescript'
   ],
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-unused-vars': 'off',
+    'no-console': 'off',
     'space-before-function-paren': 0,
     'vue/array-bracket-spacing': 0,
     'vue/arrow-spacing': 0,
@@ -25,7 +25,11 @@ module.exports = {
     'vue/component-name-in-template-casing': 'error',
     'vue/eqeqeq': 'error',
     'vue/key-spacing': 0,
+    'vue/multi-word-component-names': 'off',
+    'no-trailing-spaces': 'off',
+    'eol-last': 'off',
     'vue/match-component-file-name': 'error',
+    'no-irregular-whitespace': 0,
     'vue/object-curly-spacing': 0,
     'vue/max-attributes-per-line': 0,
     'padded-blocks': 0,

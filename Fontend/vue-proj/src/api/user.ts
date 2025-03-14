@@ -19,9 +19,9 @@ export const login = (data: any) =>
    params
  })
 
-export const getEmployeeList = (params: any) => {
+export const getUserList = (params: any) => {
   return request({
-    url: '/employee/page',
+    url: '/user/page',
     method: 'get',
     params
   })
@@ -37,9 +37,9 @@ export const enableOrDisableEmployee = (params: any) => {
 }
 
 // 新增---添加员工
-export const addEmployee = (params: any) => {
+export const addUser = (params: any) => {
   return request({
-    url: '/employee',
+    url: '/user/register',
     method: 'post',
     data: { ...params }
   })
