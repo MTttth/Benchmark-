@@ -21,10 +21,11 @@ service.interceptors.request.use(
     // console.log(config, 'config')
     // config.data = config.params
     // Add X-Access-Token header to every request, you can add other custom headers here
+    console.log(config.url)
     if (UserModule.token) {
       config.headers['token'] = UserModule.token
-    } else if (UserModule.token && config.url != '/login') {
-      window.location.href = '/login'
+    } else if (!UserModule.token && config.url != '/user/login') {
+      window.location.href = '/#/login'
       return false
     }
 

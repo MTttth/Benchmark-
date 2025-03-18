@@ -7,6 +7,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/',
     name: 'home',
+    redirect: '/userManage',
     component: () =>
       import('@/views/layout/index.vue'),
     children: [
