@@ -59,18 +59,24 @@ export default class extends Vue {
 
   // 登录方法
   private async handleLogin() {
-    await UserModule.Login(this.loginForm as any)
-      .then((res: any) => {
-        if (String(res.code) === '1') {
-          this.$router.push('/')
+  await UserModule.Login(this.loginForm as any)
+    .then((res: any) => {
+      if (String(res.code) === '1') {
+        const userType = res.data.type // 获取用户类型
+        if (userType === 0) {
+          this.$router.push('/admin') // 管理员页面
         } else {
-          // this.$message.error(res.msg)
+          this.$router.push('/user') // 普通用户页面
         }
-      })
-      .catch(() => {
-        // this.$message.error('用户名或密码错误！')
-      })
-  }
+      } else {
+        this.$message.error(res.msg)
+      }
+    })
+    .catch(() => {
+      this.$message.error('用户名或密码错误！')
+    })
+}
+
 }
 </script>
 

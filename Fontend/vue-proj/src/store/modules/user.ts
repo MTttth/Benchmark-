@@ -26,6 +26,7 @@ class User extends VuexModule implements IUserState {
   public userInfo = {}
   public roles: string[] = []
   public username = Cookies.get('username') || ''
+  public type: number = -1 // 默认值，-1 代表未选择
 
   @Mutation
   private SET_TOKEN(token: string) {
@@ -37,6 +38,11 @@ class User extends VuexModule implements IUserState {
     this.name = name
   }
 
+  @Mutation
+  private SET_TYPE(type: number) {
+    this.type = type
+  }
+  
   @Mutation
   private SET_USERINFO(userInfo: any) {
     this.userInfo = { ...userInfo }
@@ -71,8 +77,10 @@ class User extends VuexModule implements IUserState {
     let { username, password, type } = userInfo
     username = username.trim() // 去除用户名前后空格
     this.SET_USERNAME(username) // 存储用户名到 Vuex
+    this.SET_TYPE(type) // 存储用户类型到 Vuex
     Cookies.set('username', username) // 存储用户名到 Cookie
-
+    Cookies.set('type', type.toString()) // 存储到 Cookie
+    
     const { data } = await login({ username, password, type }) // 调用后端 API 进行登录
 
     if (String(data.code) === '1') { // 判断登录是否成功
