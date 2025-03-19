@@ -21,6 +21,11 @@
             prop="password"
             label="密码">
         </el-table-column>
+        <el-table-column label="操作">
+            <template slot-scope="scope">
+                <el-button type="text" @click="deleteUser(scope.row)">删除</el-button>  
+            </template>
+        </el-table-column>
         </el-table>
     </div>
     <div class="block">
@@ -38,12 +43,12 @@
 </template>
 
 <script lang="ts">
-import{getUserList} from '@/api/user'
+import{getUserList,deleteUserById} from '@/api/user'
 export default {
 
-    created(){
-        this.pageQuery()
-    },
+    // created(){
+    //     this.pageQuery()
+    // },
 
     data(){
         return{
@@ -75,6 +80,11 @@ export default {
         },
         userRegister(){
             this.$router.push({path: 'user/add'})
+        },
+        deleteUser(row, event){
+            console.log(row.id)
+            deleteUserById(row.id)
+            this.pageQuery()
         }     
     }
 }
