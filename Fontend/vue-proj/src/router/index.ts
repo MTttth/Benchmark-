@@ -5,6 +5,10 @@ Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
   {
+    path: '/',
+    redirect: '/login' // 确保默认打开的是 /login
+  },
+  {
     path: '/admin',
     name: 'admin-home',
     //redirect: '/userManage',
