@@ -6,6 +6,12 @@
         <router-link to="/userManage">
             用户管理
         </router-link>
+        <router-link to="/data/dataUpdate">
+            数据上传
+        </router-link>
+        <router-link to="/data/dataExport">
+            数据下载
+        </router-link>
     </el-aside>
     <el-main>
         <router-view></router-view>

@@ -27,15 +27,6 @@ export const getUserList = (params: any) => {
   })
 }
 
-// 修改---启用禁用接口
-export const enableOrDisableEmployee = (params: any) => {
-  return request({
-    url: `/employee/status/${params.status}`,
-    method: 'post',
-    params: { id:params.id }
-  })
-}
-
 // 新增---添加员工
 export const addUser = (params: any) => {
   return request({
@@ -45,15 +36,13 @@ export const addUser = (params: any) => {
   })
 }
 
-// 修改---添加员工
-export const editEmployee = (params: any) => {
+export const deleteUserById = (id: number) => {
   return request({
-    url: '/employee',
-    method: 'put',
-    data: { ...params }
+    url: `/user/delete/${id}`,
+    method: 'delete',
+    // data: id
   })
 }
-
 // 修改页面反查详情接口
 export const queryEmployeeById = (id: string | (string | null)[]) => {
   return request({

@@ -6,7 +6,6 @@ Vue.use(VueRouter)
 const routes: Array<RouteConfig> = [
   {
     path: '/',
-    name: 'home',
     redirect: '/userManage',
     component: () =>
       import('@/views/layout/index.vue'),
@@ -20,6 +19,16 @@ const routes: Array<RouteConfig> = [
             path: '/user/add',
             component: () =>
               import( '@/views/user/addUser.vue'),
+          },
+          {
+            path: '/data/dataUpdate',
+            component: () =>
+              import( '@/views/data/dataUpdate.vue'),
+          },
+          {
+            path: '/data/dataExport',
+            component: () =>
+              import( '@/views/data/dataExport.vue'),
           }
     ]
   },

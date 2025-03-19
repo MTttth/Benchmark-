@@ -46,7 +46,7 @@
     },
     methods: {
         submitForm(){
-            const param = {username: this.username,name: this.name, password: this.password,type: 1}
+            const param = {username: this.username,name: this.name, password: this.password,type: 0}
             addUser(param).then(res => {
                 if(res.data.code === 1){
                     this.$message.success('员工添加成功！')
