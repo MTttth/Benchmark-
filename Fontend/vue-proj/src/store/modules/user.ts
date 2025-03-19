@@ -1,6 +1,6 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators'
-import { login,userLogout } from '@/api/user'
-import { getToken, setToken, removeToken,getStoreId, setStoreId, removeStoreId, setUserInfo, getUserInfo, removeUserInfo } from '@/utils/cookies'
+import { login, userLogout } from '@/api/user'
+import { getToken, setToken, removeToken, getStoreId, setStoreId, removeStoreId, setUserInfo, getUserInfo, removeUserInfo } from '@/utils/cookies'
 import store from '@/store'
 import Cookies from 'js-cookie'
 import { Message } from 'element-ui'
@@ -64,28 +64,30 @@ class User extends VuexModule implements IUserState {
   @Mutation
   private SET_USERNAME(name: string) {
     this.username = name
-    }
+  }
 
   @Action
   public async Login(userInfo: { username: string, password: string, type: number }) {
     let { username, password, type } = userInfo
-    username = username.trim()
-    this.SET_USERNAME(username)
-    Cookies.set('username', username)
-    const { data } = await login({ username, password,type })
-    if (String(data.code) === '1') {
-      this.SET_TOKEN(data.data.token)
-      setToken(data.data.token)
-      this.SET_USERINFO(data.data)
-      Cookies.set('user_info', data.data)
-      return data
+    username = username.trim() // 去除用户名前后空格
+    this.SET_USERNAME(username) // 存储用户名到 Vuex
+    Cookies.set('username', username) // 存储用户名到 Cookie
+
+    const { data } = await login({ username, password, type }) // 调用后端 API 进行登录
+
+    if (String(data.code) === '1') { // 判断登录是否成功
+      this.SET_TOKEN(data.data.token) // 存储 token 到 Vuex
+      setToken(data.data.token) // 存储 token 到 Cookie 或 LocalStorage
+      this.SET_USERINFO(data.data) // 存储用户信息到 Vuex
+      Cookies.set('user_info', data.data) // 存储用户信息到 Cookie
+      return data // 返回后端返回的数据
     } else {
-      return Message.error(data.msg)
+      return Message.error(data.msg) // 登录失败，弹出错误信息
     }
   }
 
   @Action
-  public ResetToken () {
+  public ResetToken() {
     removeToken()
     this.SET_TOKEN('')
     this.SET_ROLES([])
@@ -100,7 +102,7 @@ class User extends VuexModule implements IUserState {
   }
 
   @Action
-  public async GetUserInfo () {
+  public async GetUserInfo() {
     if (this.token === '') {
       throw Error('GetUserInfo: token is undefined!')
     }
@@ -110,7 +112,7 @@ class User extends VuexModule implements IUserState {
       throw Error('Verification failed, please Login again.')
     }
 
-    const { roles, name, avatar, introduction, applicant, storeManagerName, storeId='' } = data // data.user
+    const { roles, name, avatar, introduction, applicant, storeManagerName, storeId = '' } = data // data.user
     // roles must be a non-empty array
     if (!roles || roles.length <= 0) {
       throw Error('GetUserInfo: roles must be a non-null array!')
@@ -124,7 +126,7 @@ class User extends VuexModule implements IUserState {
   }
 
   @Action
-  public async LogOut () {
+  public async LogOut() {
     const { data } = await userLogout({})
     removeToken()
     this.SET_TOKEN('')
