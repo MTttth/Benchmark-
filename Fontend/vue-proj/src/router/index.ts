@@ -45,8 +45,17 @@ const routes: Array<RouteConfig> = [
             path: '/analysis',
             component: () =>
               import( '@/views/analysis/index.vue'),
-          }
-
+          },
+          {
+            path: '/dataExport',
+            component: () =>
+              import( '@/views/data/dataExport.vue'),
+          },
+          {
+            path: '/dataUpload',
+            component: () =>
+              import( '@/views/data/dataUpload.vue'),
+          },
     ]
   },
   {
