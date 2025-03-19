@@ -1,38 +1,41 @@
 <template>
   <div class="container">
     <div class="nav">
-        <el-button type="primary" @click="userRegister" round>注册</el-button>
+      <el-button type="primary" round @click="userRegister">
+        注册
+      </el-button>
     </div>
     <div class="list">
-        <el-table
+      <el-table
         :data="records"
-        style="width: 100%;">
+        style="width: 100%;"
+      >
         <el-table-column
-            prop="name"
-            label="姓名"
-            width="180">
-        </el-table-column>
+          prop="name"
+          label="姓名"
+          width="180"
+        />
         <el-table-column
-            prop="username"
-            label="账户"
-            width="180">
-        </el-table-column>
+          prop="username"
+          label="账户"
+          width="180"
+        />
         <el-table-column
-            prop="password"
-            label="密码">
-        </el-table-column>
-        </el-table>
+          prop="password"
+          label="密码"
+        />
+      </el-table>
     </div>
     <div class="block">
-        <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
+      <el-pagination
         :current-page="page"
         :page-sizes="[5, 10, 15, 20]"
         :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="total">
-        </el-pagination>
+        :total="total"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </div>
   </div>
 </template>

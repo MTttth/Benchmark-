@@ -6,25 +6,31 @@
         <!-- 用户名输入框 -->
         <div class="form-group">
           <label for="username">Username</label>
-          <el-input v-model="loginForm.username" placeholder="请输入账户" type="text"></el-input>
+          <el-input v-model="loginForm.username" placeholder="请输入账户" type="text" />
         </div>
         
         <!-- 密码输入框 -->
         <div class="form-group">
           <label for="password">Password</label>
-          <el-input v-model="loginForm.password" placeholder="请输入密码" show-password type="password"></el-input>
+          <el-input v-model="loginForm.password" placeholder="请输入密码" show-password type="password" />
         </div>
 
         <!-- 角色选择 -->
         <div class="form-group">
           <el-radio-group v-model="loginForm.type" style="display: flex;justify-content: center;">
-            <el-radio :label="0">管理员</el-radio>
-            <el-radio :label="1">用户</el-radio>
+            <el-radio :label="0">
+              管理员
+            </el-radio>
+            <el-radio :label="1">
+              用户
+            </el-radio>
           </el-radio-group>
         </div>
 
         <!-- 登录按钮 -->
-        <button type="submit" class="submit-btn" @click="handleLogin">Sign in</button>
+        <button type="submit" class="submit-btn" @click="handleLogin">
+          Sign in
+        </button>
       </form>
     </div>
   </div>

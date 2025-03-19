@@ -7,7 +7,7 @@
         <img
           class="sidebar-logo"
           src="@/assets/logo.png"
-        />
+        >
         <span class="sidebar-title">Menu</span>
       </div>
 
@@ -19,37 +19,59 @@
         unique-opened
       >
         <el-sub-menu index="1">
-          <template #title><span class="menu-title">系统管理</span></template>
-          <el-menu-item index="/system">系统管理</el-menu-item>
+          <template #title>
+            <span class="menu-title">系统管理</span>
+          </template>
+          <el-menu-item index="/system">
+            系统管理
+          </el-menu-item>
         </el-sub-menu>
 
         <el-sub-menu index="2">
-          <template #title><span class="menu-title">用户管理</span></template>
-          <el-menu-item index="/userManage">用户管理</el-menu-item>
+          <template #title>
+            <span class="menu-title">用户管理</span>
+          </template>
+          <el-menu-item index="/userManage">
+            用户管理
+          </el-menu-item>
         </el-sub-menu>
 
         <el-sub-menu index="3">
-          <template #title><span class="menu-title">数据管理</span></template>
-          <el-menu-item index="/data">数据管理</el-menu-item>
+          <template #title>
+            <span class="menu-title">数据管理</span>
+          </template>
+          <el-menu-item index="/data">
+            数据管理
+          </el-menu-item>
         </el-sub-menu>
 
         <el-sub-menu index="4">
-          <template #title><span class="menu-title">业务查询</span></template>
-          <el-menu-item index="/query">业务查询</el-menu-item>
+          <template #title>
+            <span class="menu-title">业务查询</span>
+          </template>
+          <el-menu-item index="/query">
+            业务查询
+          </el-menu-item>
         </el-sub-menu>
 
         <el-sub-menu index="5">
-          <template #title><span class="menu-title">业务分析</span></template>
-          <el-menu-item index="/analysis">业务分析</el-menu-item>
+          <template #title>
+            <span class="menu-title">业务分析</span>
+          </template>
+          <el-menu-item index="/analysis">
+            业务分析
+          </el-menu-item>
         </el-sub-menu>
       </el-menu>
     </el-aside>
 
     <!-- 主要内容区域 -->
     <el-container>
-      <el-header class="header-container">TPC Benchmark 电商数据管理系统</el-header>
+      <el-header class="header-container">
+        TPC Benchmark 电商数据管理系统
+      </el-header>
       <el-main class="main-container">
-        <router-view></router-view>
+        <router-view />
       </el-main>
     </el-container>
   </el-container>
