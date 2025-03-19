@@ -46,9 +46,9 @@
 import{getUserList,deleteUserById} from '@/api/user'
 export default {
 
-    created(){
-        this.pageQuery()
-    },
+    // created(){
+    //     this.pageQuery()
+    // },
 
     data(){
         return{

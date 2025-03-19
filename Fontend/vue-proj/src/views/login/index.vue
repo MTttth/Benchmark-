@@ -1,36 +1,41 @@
 <template>
   <div class="login-container">
-    <!-- <img src="@/assets/logo.png" alt="Logo" class="logo"> -->
+    <!-- 背景图片 -->
     <div class="login-form">
-      <!-- <h2 class="title">Sign in</h2> -->
-      <form >
+      <form>
+        <!-- 用户名输入框 -->
         <div class="form-group">
           <label for="username">Username</label>
-          <el-input v-model="loginForm.username"
-           placeholder="请输入账户"
-           type="text">
-          </el-input>
+          <el-input v-model="loginForm.username" placeholder="请输入账户" type="text"></el-input>
         </div>
+        
+        <!-- 密码输入框 -->
         <div class="form-group">
           <label for="password">Password</label>
-          <el-input placeholder="请输入密码" v-model="loginForm.password" show-password type="text"></el-input>
+          <el-input v-model="loginForm.password" placeholder="请输入密码" show-password type="password"></el-input>
         </div>
+
+        <!-- 角色选择 -->
         <div class="form-group">
           <el-radio-group v-model="loginForm.type" style="display: flex;justify-content: center;">
             <el-radio :label="0">管理员</el-radio>
             <el-radio :label="1">用户</el-radio>
           </el-radio-group>
         </div>
-        <button type="submit" class="submit-btn" @click = "handleLogin">Sign in</button>
+
+        <!-- 登录按钮 -->
+        <button type="submit" class="submit-btn" @click="handleLogin">Sign in</button>
       </form>
     </div>
   </div>
 </template>
+
 <script lang="ts">
 import { Form as ElForm, Input } from 'element-ui'
 import { Route } from 'vue-router'
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import { UserModule } from '@/store/modules/user'
+
 @Component({
   components: {
     'el-input': Input
@@ -52,23 +57,28 @@ export default class extends Vue {
   @Watch('$route', { immediate: true })
   private onRouteChange(route: Route) {}
 
-  // 登录
+  // 登录方法
   private async handleLogin() {
-    await UserModule.Login(this.loginForm as any)
-      .then((res: any) => {
-        if (String(res.code) === '1') {
-          this.$router.push('/')
+  await UserModule.Login(this.loginForm as any)
+    .then((res: any) => {
+      if (String(res.code) === '1') {
+        const userType = res.data.type // 获取用户类型
+        if (userType === 0) {
+          this.$router.push('/admin') // 管理员页面
         } else {
-          // this.$message.error(res.msg)
+          this.$router.push('/user') // 普通用户页面
         }
-      })
-      .catch(() => {
-        // this.$message.error('用户名或密码错误！')
-      })
-
-  }
+      } else {
+        this.$message.error(res.msg)
+      }
+    })
+    .catch(() => {
+      this.$message.error('用户名或密码错误！')
+    })
 }
-  </script>
+
+}
+</script>
 
 <style>
 * {
