@@ -25,7 +25,7 @@ service.interceptors.request.use(
     if (UserModule.token) {
       config.headers['token'] = UserModule.token
     } else if (!UserModule.token && config.url != '/user/login') {
-      window.location.href = '/#/login'
+      // window.location.href = '/#/login'
       return false
     }
 
