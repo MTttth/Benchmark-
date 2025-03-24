@@ -82,7 +82,7 @@ export default {
             this.pageQuery()
         },
         userRegister(){
-            this.$router.push({path: 'user/add'})
+            this.$router.push({path: 'userManage/add'})
         },
         deleteUser(row, event){
             console.log(row.id)

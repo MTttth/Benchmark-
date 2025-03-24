@@ -72,17 +72,17 @@ const routes: Array<RouteConfig> = [
       import('@/views/layout/user-index.vue'),
     children: [
           {
-            path: '/data',
+            path: '/user/data',
             component: () =>
               import( '@/views/data/index.vue'),
           },
           {
-            path: '/query',
+            path: '/user/query',
             component: () =>
               import( '@/views/query/index.vue'),
           },
           {
-            path: '/analysis',
+            path: '/user/analysis',
             component: () =>
               import( '@/views/analysis/index.vue'),
           }

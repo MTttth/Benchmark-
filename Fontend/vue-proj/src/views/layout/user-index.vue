@@ -22,7 +22,7 @@
           <template #title>
             <span class="menu-title">数据管理</span>
           </template>
-          <el-menu-item index="/data">
+          <el-menu-item index="/user/data">
             数据管理
           </el-menu-item>
         </el-sub-menu>
@@ -31,7 +31,7 @@
           <template #title>
             <span class="menu-title">业务查询</span>
           </template>
-          <el-menu-item index="/query">
+          <el-menu-item index="/user/query">
             业务查询
           </el-menu-item>
         </el-sub-menu>
@@ -40,7 +40,7 @@
           <template #title>
             <span class="menu-title">业务分析</span>
           </template>
-          <el-menu-item index="/analysis">
+          <el-menu-item index="/user/analysis">
             业务分析
           </el-menu-item>
         </el-sub-menu>

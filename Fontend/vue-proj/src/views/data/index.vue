@@ -25,6 +25,10 @@
         <div class="card-header">数据导入</div>
       </template>
       <div class="import-container">
+        <el-select v-model="importTable" placeholder="选择导入的表" class="select-box">
+          <el-option v-for="table in tables" :key="table" :label="table" :value="table" />
+        </el-select>
+
         <el-upload
           class="upload-box"
           action=""
@@ -39,6 +43,31 @@
         <el-progress v-if="progress > 0" :percentage="progress" class="progress-bar" />
 
         <el-alert v-if="resultMessage" :title="resultMessage" type="success" show-icon />
+
+        <!-- 错误日志 -->
+        <el-card v-if="errorLogs.length" class="box-card">
+          <template #header>
+            <div class="card-header">错误日志</div>
+          </template>
+          <el-table :data="errorLogs" border class="error-table">
+            <el-table-column prop="line" label="行号" width="100" />
+            <el-table-column prop="field" label="字段" />
+            <el-table-column prop="error" label="错误信息" />
+          </el-table>
+          <el-button type="danger" @click="downloadErrorLog">下载错误日志</el-button>
+        </el-card>
+
+        <!-- 导入日志 -->
+        <el-card class="box-card">
+          <template #header>
+            <div class="card-header">导入日志</div>
+          </template>
+          <el-table :data="importLogs" border class="log-table">
+            <el-table-column prop="rowNumber" label="行号" width="200" />
+            <el-table-column prop="status" label="状态" width="200" />
+            <el-table-column prop="message" label="日志详情" />
+          </el-table>
+        </el-card>
       </div>
     </el-card>
   </div>
@@ -50,12 +79,15 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      tables: ['orders', 'customers', 'products'],
-      selectedTable: 'region',
+      tables: ['订单表 orders', '零部件供应表 partsupp', '订单明细表 lineitem', '供应商表 supplier', '区域表 region', '国家表 nation', '零部件表 part', '客户表 customer'], // 选择的表
+      selectedTable: '',
+      importTable: '',
       fileType: 'xlsx',
       file: null,
       progress: 0,
-      resultMessage: ''
+      resultMessage: '',
+      errorLogs: [], // 存储错误日志
+      importLogs: [] // 存储导入日志
     };
   },
   methods: {
@@ -83,14 +115,14 @@ export default {
       return false;
     },
     async uploadFile() {
-      if (!this.file) {
-        this.$message.error('请选择文件');
+      if (!this.file || !this.importTable) {
+        this.$message.error('请选择文件和数据表');
         return;
       }
 
       const formData = new FormData();
       formData.append('file', this.file);
-      formData.append('tableName', this.selectedTable);
+      formData.append('tableName', this.importTable);
 
       try {
         const response = await axios.post('/api/data/upload', formData, {
@@ -101,9 +133,29 @@ export default {
         });
 
         this.resultMessage = `导入成功，插入 ${response.data.data.rowsInserted} 行`;
+
+        // 处理错误日志
+        if (response.data.errors.length) {
+          this.errorLogs = response.data.errors;
+          this.$message.warning('部分数据未导入，请查看错误日志');
+        }
+
+        // 处理导入日志
+        this.importLogs = response.data.data.logs || [];
+
       } catch (error) {
         this.resultMessage = `导入失败: ${error.response?.data?.message || '未知错误'}`;
       }
+    },
+    downloadErrorLog() {
+      const blob = new Blob([JSON.stringify(this.errorLogs, null, 2)], { type: 'application/json' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'import_error_log.json');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
     }
   }
 };
@@ -124,6 +176,7 @@ export default {
 }
 .export-container, .import-container {
   display: flex;
+  flex-direction: column;
   gap: 1rem;
   align-items: center;
 }
@@ -140,5 +193,9 @@ export default {
 .progress-bar {
   width: 100%;
   margin-top: 1rem;
+}
+.error-table, .log-table {
+  margin-top: 1rem;
+  width: 100%;
 }
 </style>
