@@ -112,9 +112,14 @@ export default {
 </script>
 
 <style scoped>
+.el-container {
+  background-color: #6CBBB6;
+  height: 100vh;
+}
+
 .el-aside {
   padding: 20px;
-  background: #f8f9fa;
+  background: #6CBBB6;
   min-height: 100vh;
 }
 

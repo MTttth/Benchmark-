@@ -94,5 +94,8 @@ export default {
 </script>
 
 <style>
-
+.container {
+  background-color: #6CBBB6;
+  height: 100vh;
+}
 </style>
