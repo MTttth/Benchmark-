@@ -85,8 +85,10 @@ const routes: Array<RouteConfig> = [
             path: '/user/analysis',
             component: () =>
               import( '@/views/analysis/index.vue'),
-          }
-
+          },
+          {
+            path:'testPage'
+          },
     ]
   }
 

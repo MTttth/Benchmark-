@@ -98,6 +98,8 @@
         <el-button class="path-btn" @click="handleSelectPath">
           <span class="btn-path-title">路径选择</span>
         </el-button>
+        <!-- 根据路径选择按钮的实现决定该按钮是否保留 -->
+        <!-- 若保留，则考虑在“其他信息查询”处复制一个相同的按钮 -->
         <el-button class="inline-btn save-btn" @click="handleSave">
           <span class="inline-text">保存</span>
         </el-button>
