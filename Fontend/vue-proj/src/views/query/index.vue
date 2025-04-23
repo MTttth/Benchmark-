@@ -235,6 +235,7 @@ const handleOtherPath = () => {
 </script>
 
 <style scoped>
+
 .container {
   background-color: #6CBBB6;
   height: 90vh;
@@ -357,21 +358,22 @@ const handleOtherPath = () => {
 }
 
 .inline-select {
+  box-sizing: border-box;;
   position:relative;
   height:55px;
   width:70px;
   background-color: #FFFFFF;
-  border: 4px solid #BCBCBC!important;
-  border-radius: 0px 10px 10px 0px!important;
-  border-left: none!important;  
-  padding: 0!important; 
-  justify-content:left!important;
-  align-items: center!important;
-  display: flex!important;
+  border: 4px solid #BCBCBC;
+  border-radius: 0px 10px 10px 0px;
+  border-left: none;  
+  padding: 0; 
+  justify-content:left;
+  align-items: center;
+  display: flex;
 }
 
 .inline-select .select-inline-btn {
-  display: inline-flex!important;
+  display: inline-flex;
   justify-content: center!important;
   align-items: center!important;
   background-color: #A9AFB1 !important;
@@ -379,7 +381,7 @@ const handleOtherPath = () => {
   border:1px;
   box-shadow: none!important;
   width: 65px;
-  height: 40px !important;
+  height: 40px;
 }
 
 :deep(.custom-select .el-select__caret) {
@@ -413,12 +415,13 @@ const handleOtherPath = () => {
 
 /* 查询结果样式 */
 .result-header {
-  position:relative;
-  left:-550px;
-  bottom:-10px; 
+  position:absolute;
+  left:400px;
+  bottom:645px; 
 }
 
 .query-result {
+  box-sizing: border-box;;
   margin-left:50px;
   margin-top: 20px;
   height:285px;

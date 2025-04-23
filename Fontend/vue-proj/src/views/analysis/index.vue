@@ -87,146 +87,120 @@ export default {
 </script>
 
 <style scoped>
+
 .tpc-container {
-    padding: 20px;
-    margin: 0 auto;
-    height: 90vh;
-    background-color: #6CBBB6;
+  padding: 20px;
+  margin: 0 auto;
+  min-height: 90vh; /* 改为最小高度 */
+  background-color: #6CBBB6;
+  position: relative; /* 创建定位上下文 */
+  display: flex; /* 启用 flex 布局 */
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .header {
-    text-align: left;
-    margin-bottom: 10px;
-    color: #E6E5D4;
-    font-size: 25px;
-    font-weight: bolder;
-    position:relative;
-    left:50px;
+  text-align: left;
+  margin: 10px 0 20px 50px; /* 用 margin 替代定位 */
+  color: #E6E5D4;
+  font-size: 25px;
+  font-weight: bolder;
 }
 
 .query-form {
-    width:550px;
-    height:230px;
-    margin-bottom: 30px;
-    background: #BCBCBC;
-    padding: 20px;
-    border-radius: 10px;
-    border: 4px solid #A9AFB1;
-    position:relative;
-    left:50px;
+  width: 550px;
+  min-height: 230px; /* 允许高度扩展 */
+  margin: -7px 0 30px 50px; /* 用 margin 实现偏移 */
+  background: #BCBCBC;
+  /* padding: 20px; */
+  padding-top:30px;
+  padding-right:20px;
+  border-radius: 10px;
+  border: 4px solid #A9AFB1;
+  z-index: 1; /* 保持层级 */
 }
 
-.date-container{
-    background-color: #6CBBB6;
-    width:350px;
-    height:45px;
-    display: flex;
-    justify-content: center;
-    align-items: center;    
+.business-section {
+  position: absolute;
+  left:700px; /* 改用 right 定位 */
+  top: 80px;
+  width: 600px;
+  height: 750px; /* 允许高度扩展 */
+  padding: 20px;
+  border: 4px solid #A9AFB1;
+  border-radius: 10px;
+  background-color: #BCBCBC;
 }
 
-::v-deep .el-form-item__label {
-  font-size: 20px;
-  color: #333;
-  font-weight: bolder;
-  margin-top:5px;
+/* 其他样式优化 */
+.date-container {
+  background-color: #6CBBB6;
+  width: 350px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;    
+}
+
+.country-select {
+  width: 350px;
+  height: 45px;
+  border-radius: 10px; 
+  border:4px solid #A9AFB1;
 }
 
 ::v-deep .el-date-editor {
-  /* 输入框样式 */
-  width:350px;
-  height:45px;
+  width: 350px;
+  height: 45px;
   border-radius: 10px;
   background-color: #BCBCBC;
-  border:4px,solid,#A9AFB1;
+  border: 4px solid #A9AFB1; /* 修正语法错误 */
+}
+
+.process-title {
+  color: #333;
+  font-size: 20px;
+  font-weight: bolder;
+  margin: -5px 200px 5px -220px; /* 用 margin 替代定位 */
+}
+
+.placeholder-content {
+  border-radius: 10px;
+  height: calc(100% - 40px); /* 动态高度 */
+  height: 650px; /* 保证最小高度 */
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  overflow: auto;
+}
+
+.action-wrapper {
+  text-align: right;
+  margin-top: -10px;
+}
+
+.btn {
+  border: 0;
+  border-radius: 10px;
+  background-color: #A9AFB1;
+  width: 80px;
+  height: 40px;
+  display: inline-flex; /* 改用 inline-flex */
   justify-content: center;
   align-items: center;
 }
 
-::v-deep.el-date-editor .el-range-input {
-  /* 输入框文本样式 */
-  font-size: 20px;
-  font-weight:bolder;
-  border-radius: 10px;
-}
+/* 新增全局样式 */
+/* :global(html) {
+  overflow: hidden;
+  box-sizing: border-box;
+} */
 
-::v-deep .el-input__icon {
-    line-height: 30px;
-    color:#333;
-}
-
-.country-select {
-    width: 350px; /* 设置宽度 */
-    height: 45px; /* 设置高度 */
-    border:3px solid #A9AFB1;
-    border-radius: 10px;
-}
-
-.country-select :deep(.el-input__inner::placeholder) {
-  color: #BCBCBC;
-  font-size:20px;
-  font-weight: bolder;
-  position:relative;
-  top:3px;
-  left:-5px;
-}
-
-.business-section {
-    margin: 20px 0;
-    padding: 20px;
-    border: 4px solid #A9AFB1;
-    border-radius: 10px;
-    background-color: #BCBCBC;
-    position:absolute;
-    width:600px;
-    height:750px;
-    top:146px;
-    left:1050px;
-}
-
-.process-title{
-    color:#333;
-    font-size:20px;
-    font-weight: bolder;
-    position: relative;
-    left:-215px;
-    top:-5px;
-}
-
-.placeholder-content {
-    border-radius: 10px;
-    height:650px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: #fff;
-    overflow: auto;
-}
-
-.action-wrapper {
-    position:relative;
-    top:-10px;
-    left:225px;
-}
-
-.btn{
-    border:0;
-    border-radius: 10px;
-    background-color: #A9AFB1;
-    width:80px;
-    height:40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    left:205px;
-}
-
-.text{
-    font-size: 20px;
-    font-weight: bolder;
-    color:#FFFFFF;
+:global(*),
+:global(*::before),
+:global(*::after) {
+  box-sizing: inherit;
 }
 </style>

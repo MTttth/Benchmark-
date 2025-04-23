@@ -36,14 +36,13 @@ export default {
 </script>
 
 <style>
-/* 增加全局样式，防止页面偏移 */
+/* 增加全局样式，防止刷新后页面变化 */
 html, body, #app {
   margin: 0;
   padding: 0;
   height: 100%;
   overflow: hidden;
 }
-
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
