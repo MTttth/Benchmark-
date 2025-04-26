@@ -1,29 +1,17 @@
 <template>
   <div class="container">
-    <!-- 数据导出 -->
-    <el-card class="box-card">
-      <template #header>
-        <div class="card-header">数据导出</div>
-      </template>
-      <div class="export-container">
-        <el-select v-model="selectedTable" placeholder="选择数据表" class="select-box">
-          <el-option v-for="table in tables" :key="table" :label="table" :value="table" />
-        </el-select>
-
-        <el-radio-group v-model="fileType" class="radio-group">
-          <el-radio label="xlsx">xlsx</el-radio>
-          <el-radio label="txt">TXT</el-radio>
-        </el-radio-group>
-
-        <el-button type="primary" @click="handleExport" :disabled="!selectedTable">导出数据</el-button>
-      </div>
-    </el-card>
 
     <!-- 数据导入 -->
-    <el-card class="box-card">
-      <template #header>
+    <div class="header-container">
+      <span class="card-header">
+        数据导入
+      </span>
+      </div>
+    <el-card class="import-card">
+      <!-- <template #header>
         <div class="card-header">数据导入</div>
-      </template>
+      </template> -->
+
       <div class="import-container">
         <el-select v-model="importTable" placeholder="选择导入的表" class="select-box">
           <el-option v-for="table in tables" :key="table" :label="table" :value="table" />
@@ -68,6 +56,30 @@
             <el-table-column prop="message" label="日志详情" />
           </el-table>
         </el-card>
+      </div>
+    </el-card>
+
+    <!-- 数据导出 -->
+    <div class="header-container">
+      <span class="card-header">
+         数据导出
+      </span>
+    </div>
+    <el-card class="export-card">
+      <!-- <template #header>
+        <div class="card-header">数据导出</div>
+      </template> -->
+      <div class="export-container">
+        <el-select v-model="selectedTable" placeholder="选择数据表" class="select-box">
+          <el-option v-for="table in tables" :key="table" :label="table" :value="table" />
+        </el-select>
+
+        <el-radio-group v-model="fileType" class="radio-group">
+          <el-radio label="xlsx" class="x-sel">xlsx</el-radio>
+          <el-radio label="txt" class="t-sel">txt</el-radio>
+        </el-radio-group>
+
+        <el-button type="primary" @click="handleExport" :disabled="!selectedTable">导出数据</el-button>
       </div>
     </el-card>
   </div>
@@ -162,31 +174,92 @@ export default {
 </script>
 
 <style scoped>
+/* *{
+  border:1px solid red;
+} */
 .container {
-  max-width: 800px;
-  margin: 2rem auto;
+  height:90vh;
+  background-color: #6CBBB6;
+  display: flex;
+  flex-direction: column;
+  padding:20px;
+  gap:10px;
+  overflow: hidden;
 }
+
+.export-card{
+  background-color: #BCBCBC;
+  border:4px solid #A9AFB1;
+  border-radius: 10px;
+  margin-left:10px;
+  width:1170px;
+  height:200px;
+}
+
+.header-container{
+  display: flex;
+  position:relative;
+  left:10px;
+  bottom:-10px;
+}
+
+.card-header {
+  font-size: 25px;
+  font-weight: bolder;
+  color:#E6E5D4;
+  /* margin-right: 1000px;
+  margin-bottom: 20px; */
+}
+
 .box-card {
   margin-bottom: 1.5rem;
   padding: 1rem;
 }
-.card-header {
-  font-size: 1.2rem;
-  font-weight: bold;
-}
+
 .export-container, .import-container {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 10px;
   align-items: center;
 }
 .select-box {
   width: 200px;
 }
+
 .radio-group {
   display: flex;
-  gap: 1rem;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  gap: 10px;
 }
+
+:deep(.el-radio) {
+  margin-right: 20px; /* 统一间距 */
+}
+
+:deep(.el-radio__label) {
+  min-width: 30px; /* 设置统一的最小宽度 */
+  display: inline-block;
+  text-align: center; /* 可选：文字居中 */
+}
+
+:deep(.el-radio__input.is-checked .el-radio__inner) {
+  background-color: #ff6600; /* 选中时的背景色 */
+  border-color: #ff6600;    /* 选中时的边框色 */
+}
+
+:deep(.el-radio__input.is-checked + .el-radio__label) {
+  color: #ff6600; /* 选中时的文字颜色 */
+}
+
+.import-card{
+  background-color: #BCBCBC;
+  border:4px solid #A9AFB1;
+  border-radius: 10px;
+  width:1170px;
+  margin-left:10px;
+}
+
 .upload-box {
   display: flex;
 }

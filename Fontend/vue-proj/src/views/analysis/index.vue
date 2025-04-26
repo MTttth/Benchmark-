@@ -101,7 +101,7 @@ export default {
 
 .header {
   text-align: left;
-  margin: 10px 0 20px 50px; /* 用 margin 替代定位 */
+  margin: 10px 0 20px 50px;
   color: #E6E5D4;
   font-size: 25px;
   font-weight: bolder;
@@ -110,7 +110,7 @@ export default {
 .query-form {
   width: 550px;
   min-height: 230px; /* 允许高度扩展 */
-  margin: -7px 0 30px 50px; /* 用 margin 实现偏移 */
+  margin: -7px 0 30px 50px; 
   background: #BCBCBC;
   /* padding: 20px; */
   padding-top:30px;
@@ -122,17 +122,16 @@ export default {
 
 .business-section {
   position: absolute;
-  left:700px; /* 改用 right 定位 */
+  left:700px; 
   top: 80px;
   width: 600px;
-  height: 750px; /* 允许高度扩展 */
+  height: 750px; 
   padding: 20px;
   border: 4px solid #A9AFB1;
   border-radius: 10px;
   background-color: #BCBCBC;
 }
 
-/* 其他样式优化 */
 .date-container {
   background-color: #6CBBB6;
   width: 350px;
@@ -154,20 +153,20 @@ export default {
   height: 45px;
   border-radius: 10px;
   background-color: #BCBCBC;
-  border: 4px solid #A9AFB1; /* 修正语法错误 */
+  border: 4px solid #A9AFB1; 
 }
 
 .process-title {
   color: #333;
   font-size: 20px;
   font-weight: bolder;
-  margin: -5px 200px 5px -220px; /* 用 margin 替代定位 */
+  margin: -5px 200px 5px -220px; 
 }
 
 .placeholder-content {
   border-radius: 10px;
   height: calc(100% - 40px); /* 动态高度 */
-  height: 650px; /* 保证最小高度 */
+  height: 650px; 
   display: flex;
   flex-direction: column;
   align-items: center;

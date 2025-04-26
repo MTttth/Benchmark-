@@ -236,6 +236,9 @@ const handleOtherPath = () => {
 
 <style scoped>
 
+/* *{
+  border:1px solid red;
+} */
 .container {
   background-color: #6CBBB6;
   height: 90vh;
@@ -427,7 +430,7 @@ const handleOtherPath = () => {
   height:285px;
   width:1200px;
   background-color: #BCBCBC;
-  padding-top:50px;
+  /* padding-top:50px; */
   display: flex;
   flex-direction: column;
   position:relative;
