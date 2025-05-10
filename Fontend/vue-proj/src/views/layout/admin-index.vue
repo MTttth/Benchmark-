@@ -1,17 +1,21 @@
 <template>
-  <el-container class="layout-container">
-    <!-- 侧边栏 -->
-    <el-aside class="sidebar-container">
-      <!-- Logo & 标题 -->
-      <div class="sidebar-header">
-        <img
-          class="sidebar-logo"
-          src="@/assets/logo.png"
-        >
-        <span class="sidebar-title">Menu</span>
+  <div class="main-wrapper">
+    <div class="top-bar">
+      <img 
+        class="header-logo"
+        src="@/assets/logo.png"
+        :style="{ width: '76px', height: '75px' }"
+      >
+      <div class="header-title">
+        TPC Benchmark<br>
+        电商数据管理系统
       </div>
-
-      <!-- 侧边栏菜单 -->
+    </div>
+    <el-container class="layout-container">
+    <el-aside class="sidebar-container">
+      <!-- <div class="sidebar-header">
+        <span class="sidebar-title">Menu</span>
+      </div> -->
       <el-menu
         class="custom-menu"
         :default-active="activeMenu"
@@ -65,17 +69,35 @@
       </el-menu>
     </el-aside>
 
-    <!-- 主要内容区域 -->
-    <el-container>
-      <el-header class="header-container">
-        TPC Benchmark 电商数据管理系统
-      </el-header>
+    <el-container class="content-container">
+      <!-- 主要内容区域 -->
       <el-main class="main-container">
         <router-view />
       </el-main>
     </el-container>
-  </el-container>
+      </el-container>
+  </div>
 </template>
+
+<style scoped>
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.layout-container {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+</style>
 
 <script setup>
 import { ref } from 'vue'
@@ -83,29 +105,65 @@ const activeMenu = ref('/home')
 </script>
 
 <style scoped>
+.top-bar {
+  height: 100px;
+  background: #F4F3EA;
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+}
+
+.header-logo {
+  margin-right: 20px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.header-title {
+  color: #A4A8A9;
+  font-size: 1.8rem;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  font-weight: bold;
+}
+
+.layout-container {
+  height: calc(100vh - 80px);
+  display: flex;
+}
+
+/* 移除原有的.header-container样式 */
+</style>
+
+<style scoped>
 /* 主体布局 */
 .layout-container {
   height: 100vh;
+  display: flex; /* 新增 */
 }
 
 /* 侧边栏整体样式 */
-.sidebar-container {
-  width: 250px;
-  height: 100vh;
-  background: linear-gradient(135deg, #2c3e50 10%, #34495e 90%);
+.el-aside.sidebar-container {
+  width: 350px !important;
+  height: 100vh; /* 修改为全屏高度 */
+  margin-top: 0; /* 移除顶部间距 */
+  background-image: url('@/assets/Sidebar_Background.jpeg');
+  background-size: cover;
+  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
-  padding-top: 10px;
+  padding-top: 0px;
 }
 
-/* 顶部 Logo & 标题 */
-.sidebar-header {
+/* .sidebar-header {
   display: flex;
   align-items: center;
   padding: 1rem;
   background-color: rgba(255, 255, 255, 0.1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
+} */
 
 .sidebar-logo {
   width: 45px;
@@ -131,12 +189,14 @@ const activeMenu = ref('/home')
 .menu-title {
   font-size: 1rem;
   font-weight: bold;
-  color: #ffffff;
+  color: #E6E5D4;
 }
 
 /* 菜单项 */
 .el-menu-item {
-  color: #ffffff !important;
+  color: #F4F3EA !important;
+  font-size: 1.5rem!important;
+  font-weight: bold;
 }
 
 /* 菜单项悬停样式 */
@@ -146,7 +206,7 @@ const activeMenu = ref('/home')
 
 /* 激活状态 */
 .el-menu-item.is-active {
-  background: rgba(255, 255, 255, 0.3) !important;
+  background: #6CBBB6 !important;
   font-weight: bold;
   border-radius: 5px;
 }
@@ -163,10 +223,31 @@ const activeMenu = ref('/home')
   font-weight: bold;
 }
 
+/* 主要内容区域父容器 */
+.el-container > .el-container {
+  flex: 1;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 /* 主内容区域 */
 .main-container {
-  padding: 20px;
+  padding: 0px;
   background: #f4f4f4;
-  flex-grow: 1;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  /* 新增以下两行 */
+  flex: 1;
+  min-height: 0; /* 修复flex布局下的高度计算问题 */
+}
+
+/* 调整父容器 */
+.el-container > .el-container {
+  height: calc(100vh - 60px);
+  flex-direction: column;
+  /* 新增 */
+  display: flex;
+  flex: 1;
 }
 </style>

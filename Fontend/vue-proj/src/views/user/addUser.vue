@@ -7,8 +7,8 @@
     <div class="container">
       <el-form
         :inline="false"
-        label-width="180px"
-        class="demo-ruleForm"
+        label-width=auto
+        class="ruleForm"
       >
         <el-form-item
           label="账号:"
@@ -43,10 +43,10 @@
         </el-form-item>  
       </el-form>
       <el-button
-        type="primary"
+        class="add-btn"
         @click="submitForm()"
       >
-        添加
+        <span class="inline-txt">添加</span>
       </el-button>
     </div>
   </div>
@@ -83,23 +83,85 @@
   </script>
   
   <style lang="scss" scoped>
-  .addBrand {
-    &-container {
-      margin: 30px;
-      margin-top: 0px;
-      .container {
-        position: relative;
-        z-index: 1;
-        background: #fff;
-        padding: 30px;
-        border-radius: 4px;
-      }
-      .el-form-item {
-        margin-bottom: 29px;
-      }
-      .el-input {
-        width: 293px;
-      }
-    }
+  // *{
+  //   border:1px solid #000000;
+  // }
+  .addBrand-container {
+    background-color: #6CBBB6;
+    height:90vh;
+    padding:50px;
+    overflow: hidden;
+    box-sizing: border-box;
   }
+
+  .container{
+    background-color: #BCBCBC;
+    border:4px solid #A9AFB1;
+    border-radius: 10px;
+    padding:20px;
+    margin-left:30px;
+    display: flex;
+    flex-direction: column;
+    gap:30px;
+  }
+
+  .ruleForm{
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-self: start;
+  }
+
+  :deep(.el-form-item__label) {
+  font-size: 20px;
+  font-weight: bolder;
+  color: #A9AFB1;
+  }
+
+  :deep(.el-input__inner) {
+  font-size: 20px;
+  font-weight: bolder;
+  color: #A9AFB1;
+  }
+
+  .add-btn{
+    width: 100px;
+    height: 40px;
+    background-color: #A9AFB1;
+    border-radius: 10px;
+    border:0;
+    margin-left: 550px;
+  }
+
+  .inline-txt{
+    font-size: 20px;
+    font-weight: bolder;
+    color: #FFFFFF;
+  }
+  // :deep(.el-input__inner::placeholder) {
+  // color: #A9AFB1;
+  // font-size: 20px;
+  // font-weight: bold;
+  // }
+  // .addBrand {
+  //   &-container {
+  //     margin: 30px;
+  //     margin-top: 0px;
+  //     .container {
+  //       position: relative;
+  //       z-index: 1;
+  //       background: #fff;
+  //       padding: 30px;
+  //       border-radius: 4px;
+  //     }
+  //     .el-form-item {
+  //       margin-bottom: 29px;
+  //     }
+  //     .el-input {
+  //       width: 293px;
+  //     }
+  //   }
+  // }
   </style>
