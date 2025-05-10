@@ -26,7 +26,8 @@ service.interceptors.request.use(
       config.headers['token'] = UserModule.token
     } else if (!UserModule.token && config.url != '/user/login') {
       // window.location.href = '/#/login'
-      return false
+      Message.error('未登录，请先登录');
+      return Promise.reject(new Error('未登录，拦截请求'));
     }
 
     // config.headers['Access-Control-Allow-Origin'] = '*'

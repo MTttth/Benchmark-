@@ -17,13 +17,22 @@ export interface IUserState {
 
 @Module({ 'dynamic': true, store, 'name': 'user' })
 class User extends VuexModule implements IUserState {
-  public token = getToken() || ''
+  public token = getToken() || (process.env.NODE_ENV === 'development' ? 'debug-token' : '')
   public name = ''
   public avatar = ''
   // @ts-ignore
   public storeId: string = getStoreId() || ''
   public introduction = ''
-  public userInfo = {}
+  public userInfo = process.env.NODE_ENV === 'development'
+  ? {
+      roles: ['admin'],
+      name: '开发者',
+      avatar: '',
+      introduction: '本地调试用户',
+      storeId: 'debug-store-id'
+    }
+  : {}
+
   public roles: string[] = []
   public username = Cookies.get('username') || ''
   public type: number = -1 // 默认值，-1 代表未选择
@@ -111,9 +120,9 @@ class User extends VuexModule implements IUserState {
 
   @Action
   public async GetUserInfo() {
-    if (this.token === '') {
+    if (this.token === '' && process.env.NODE_ENV !== 'development') {
       throw Error('GetUserInfo: token is undefined!')
-    }
+    }    
 
     const data = JSON.parse(<string>getUserInfo()) //  { roles: ['admin'], name: 'zhangsan', avatar: '/login', introduction: '' }
     if (!data) {
@@ -122,9 +131,9 @@ class User extends VuexModule implements IUserState {
 
     const { roles, name, avatar, introduction, applicant, storeManagerName, storeId = '' } = data // data.user
     // roles must be a non-empty array
-    if (!roles || roles.length <= 0) {
+    if ((!roles || roles.length <= 0) && process.env.NODE_ENV !== 'development') {
       throw Error('GetUserInfo: roles must be a non-null array!')
-    }
+    }    
 
     this.SET_ROLES(roles)
     this.SET_USERINFO(data)

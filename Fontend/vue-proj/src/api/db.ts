@@ -14,3 +14,25 @@ export const saveDbConfig = (data: any) =>
     'method': 'post',
     data
   })
+
+// 获取客户列表（下拉选择）
+export const getCustomerList = () =>
+  request({
+    'url': '/api/customers/list',
+    'method': 'get'
+  });
+
+// 根据客户名或国家名查询客户信息
+export const queryCustomer = (data: any) =>
+  request({
+    'url': '/api/customers/query',
+    'method': 'post',
+    data
+  });
+
+// 获取国家订单汇总数据（用于图表展示）
+export const fetchOrderChart = () =>
+  request({
+    'url': '/api/orders/summary',
+    'method': 'get'
+  });
