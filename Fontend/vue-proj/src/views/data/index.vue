@@ -79,7 +79,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      tables: ['订单表 orders', '零部件供应表 partsupp', '订单明细表 lineitem', '供应商表 supplier', '区域表 region', '国家表 nation', '零部件表 part', '客户表 customer'], // 选择的表
+      tables: ['订单表 orders', '零部件供应表 partsupp', '订单明细表 lineitem', '供应商表 supplier', '区域表 Region', '国家表 nation', '零部件表 part', '客户表 customer'], // 选择的表
       selectedTable: '',
       importTable: '',
       fileType: 'xlsx',
@@ -119,33 +119,106 @@ export default {
         this.$message.error('请选择文件和数据表');
         return;
       }
+      const chunkSize = 1024 * 1024; // 1MB
+      const file = this.file;
+      let start = 0;
 
-      const formData = new FormData();
-      formData.append('file', this.file);
-      formData.append('tableName', this.importTable);
-
-      try {
-        const response = await axios.post('/api/data/upload', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-          onUploadProgress: (progressEvent) => {
-            this.progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+      while (start < file.size) {
+        // 步骤1：计算初始切割点
+        let end = Math.min(start + chunkSize, file.size);
+        
+        // 步骤2：读取切割点附近的2KB内容（覆盖可能的换行符）
+        const scanStart = Math.max(start, end - 2048); // 向后扫描2KB
+        const scanChunk = file.slice(scanStart, end);
+        const scanText = await new Response(scanChunk).text();
+        
+        // 步骤3：逆向查找最后一个换行符
+        let lastNewLinePos = -1;
+        // 遍历所有可能的换行符位置（支持 \n 和 \r\n）
+        for (let i = scanText.length - 1; i >= 0; i--) {
+          if (scanText[i] === '\n') {
+            lastNewLinePos = i;
+            // 检查是否是 \r\n 的情况
+            if (i > 0 && scanText[i - 1] === '\r') {
+              lastNewLinePos--; // 包含 \r
+            }
+            break;
           }
-        });
-
-        this.resultMessage = `导入成功，插入 ${response.data.data.rowsInserted} 行`;
-
-        // 处理错误日志
-        if (response.data.errors.length) {
-          this.errorLogs = response.data.errors;
-          this.$message.warning('部分数据未导入，请查看错误日志');
         }
 
-        // 处理导入日志
-        this.importLogs = response.data.data.logs || [];
+        // 步骤4：调整切割点至行尾
+        if (lastNewLinePos !== -1) {
+          end = scanStart + lastNewLinePos + (scanText[lastNewLinePos] === '\r' ? 2 : 1);
+        }
 
-      } catch (error) {
-        this.resultMessage = `导入失败: ${error.response?.data?.message || '未知错误'}`;
+        // 步骤5：生成最终文件块
+        const chunk = file.slice(start, end);
+        
+        // 上传逻辑（保持原有代码）
+        const formData = new FormData();
+        formData.append('file', chunk);
+        formData.append('tableName', this.importTable);
+        
+        const response = await axios.post('/api/data/upload', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+
+        // 更新进度（精确到实际切割位置）
+        start = end;
+        this.progress = Math.round((start / file.size) * 100);
+
+        // 响应处理（保持不变）
+        if (response.data.code === 1) {
+          this.resultMessage = `导入成功，插入 ${response.data.data.rowsInserted} 行`;
+          this.importLogs = response.data.data.importLog || [];
+        } else {
+          this.errorLogs.push(...response.data.data.errorLogs)
+          this.$message.warning('部分数据未导入，请查看错误日志');
+        }
       }
+      // const chunkSize = 1024 * 1024; // 1MB
+      // const file = this.file // 获取文件对象
+      // for (let start = 0; start < file.size; start += chunkSize) {
+      //   const chunk = file.slice(start, start + chunkSize);
+      //   const formData = new FormData();
+      //   formData.append('file', chunk);
+      //   formData.append('tableName', this.importTable);
+      //   console.log(start)
+      //   const response = await axios.post('/api/data/upload', formData, {
+      //     headers: { 'Content-Type': 'multipart/form-data' },
+      //   });
+      //   this.progress = Math.round((start / file.size) * 100);
+      //   if (response.data.code === 1){
+      //     this.resultMessage = `导入成功，插入 ${response.data.data.rowsInserted} 行`;
+      //     // 处理导入日志
+      //     this.importLogs = response.data.data.importLog || [];
+      //   }else{
+      //     this.errorLogs.push(...response.data.data.errorLogs)
+      //     this.$message.warning('部分数据未导入，请查看错误日志');
+      //   }
+      // }
+      // *******************************************************************************************************
+      // const formData = new FormData();
+      // formData.append('file', this.file);
+      // formData.append('tableName', this.importTable);
+      // try {
+      //   const response = await axios.post('/api/data/upload', formData, {
+      //     headers: { 'Content-Type': 'multipart/form-data' },
+      //     onUploadProgress: (progressEvent) => {
+      //       this.progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+      //     }
+      //   });
+      //   if (response.data.code === 1){
+      //     this.resultMessage = `导入成功，插入 ${response.data.data.rowsInserted} 行`;
+      //     // 处理导入日志
+      //     this.importLogs = response.data.data.importLog || [];
+      //   }else{
+      //     this.errorLogs = this.errorLogs + response.data.data.errorLogs;
+      //     this.$message.warning('部分数据未导入，请查看错误日志');
+      //   }
+      // } catch (error) { //error.response?.data?.msg
+      //   this.resultMessage = `导入失败: ${error.data.msg || '未知错误'}`;
+      // }
     },
     downloadErrorLog() {
       const blob = new Blob([JSON.stringify(this.errorLogs, null, 2)], { type: 'application/json' });

@@ -32,6 +32,7 @@
         const formData = new FormData();
         formData.append('file', this.file);
         formData.append('tableName', this.tableName);
+        console.log(this.tableName)
   
         try {
           const response = await axios.post('/api/data/upload', formData, {
