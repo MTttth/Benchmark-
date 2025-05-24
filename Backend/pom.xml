@@ -14,7 +14,6 @@
 	<modules>
 		<module>server</module>
 		<module>pojo</module>
-		<module>common</module>
 	</modules>
 	<name>TPCBenchmark</name>
 	<description>TPCBenchmark</description>

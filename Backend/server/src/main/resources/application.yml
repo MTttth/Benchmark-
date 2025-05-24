@@ -1,5 +1,6 @@
 server:
   port: 8080
+  address: 0.0.0.0
 
 
 
@@ -11,6 +12,10 @@ mybatis:
     #开启驼峰命名
     map-underscore-to-camel-case: true
 spring:
+  servlet:
+    multipart:
+      max-file-size: 1GB
+      max-request-size: 1GB
   main:
     allow-circular-references: true
   datasource:
@@ -22,13 +27,13 @@ example:
 
     jwt:
         # 设置jwt签名加密时使用的秘钥
-        admin-secret-key: admin
+        admin-secret-key: itcastgghhhhhhhhhhhhhhhhhhhhhhhhhgdg
         # 设置jwt过期时间
         admin-ttl: 7200000
         # 设置前端传递过来的令牌名称
         admin-token-name: token
 
-        user-secret-key: user
+        user-secret-key: userhhhhhhhhhhhhdgeeeeeeeeagsergseh
         user-ttl: 7200000
         user-token-name: authentication
 

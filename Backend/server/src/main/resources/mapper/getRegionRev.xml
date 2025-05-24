@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.server.mapper.DataMapper">
+    <select id="getRegionRev" resultType="com.example.pojo.general.NationRev">
+        select
+        n_name,
+        sum(l_extendedprice * (1- l_discount)) as revenue
+        from
+        customer,
+        orders,
+        lineitem,
+        supplier,
+        nation,
+        region
+        where
+        c_custkey = o_custkey
+        and l_orderkey = o_orderkey
+        and l_suppkey = s_suppkey
+        and c_nationkey = s_nationkey
+        and s_nationkey = n_nationkey
+        and n_regionkey = r_regionkey
+        and r_name = #{rName}
+        and O_ORDERDATE between date (#{date}) and date (#{date}) + interval '1' year
+        group by
+        n_name
+        order by
+        revenue desc;
+    </select>
+    <select id="getCustBaseInfo" resultType="com.example.pojo.general.UserInfoBase">
+        select
+            c_name as cName,
+            c_address as address,
+            c_phone as phone,
+            C_ACCTBAL as CAcctbal,
+            C_MKTSEGMENT as CMktsegment,
+            N_NAME as nationName
+        from
+            customer,
+            nation
+        where
+            c_nationkey = n_nationkey
+        and c_name = #{cName}
+    </select>
+    <select id="getOrderInfos" resultType="com.example.pojo.general.OrderInfo">
+        select
+            o_orderstatus as oOrderstatus,
+            o_totalprice as oTotalprice,
+            o_orderdate as oOrderdate,
+            o_clerk as oClerk,
+            l_quantity as LQuantity,
+            l_extendedprice as LExtendedprice,
+            L_TAX as LTex,
+            l_receiptdate as LReceiptdate,
+            l_discount as LDiscount
+        from
+            customer,
+            orders,
+            lineitem
+        where
+            c_name = #{cName}
+        and C_CUSTKEY = o_custkey
+        and o_orderkey = l_orderkey
+
+    </select>
+    <select id="getNationProfits" resultType="com.example.pojo.general.NationProfit">
+        select
+            nation,
+            o_year,
+            sum(amount) as sum_profit
+        from
+            (
+                select
+                    n_name as nation,
+                    extract(year from o_orderdate) as o_year,
+                    l_extendedprice * (1- l_discount)- ps_supplycost * l_quantity as amount
+                from
+                    part,
+                    supplier,
+                    lineitem,
+                    partsupp,
+                    orders,
+                    nation
+                where
+                    s_suppkey = l_suppkey
+                  and ps_suppkey = l_suppkey
+                  and ps_partkey = l_partkey
+                  and p_partkey = l_partkey
+                  and o_orderkey = l_orderkey
+                  and s_nationkey = n_nationkey
+                  and p_type = #{partType}
+            ) as profit
+        group by
+            nation,
+            o_year
+        order by
+            nation,
+            o_year desc;
+    </select>
+    <select id="getExplainPlan" resultType="com.example.pojo.dto.ExplianPlan">
+        EXPLAIN  select
+            nation,
+            o_year,
+            sum(amount) as sum_profit
+        from
+            (
+                select
+                    n_name as nation,
+                    extract(year from o_orderdate) as o_year,
+                    l_extendedprice * (1- l_discount)- ps_supplycost * l_quantity as amount
+                from
+                    part,
+                    supplier,
+                    lineitem,
+                    partsupp,
+                    orders,
+                    nation
+                where
+                    s_suppkey = l_suppkey
+                  and ps_suppkey = l_suppkey
+                  and ps_partkey = l_partkey
+                  and p_partkey = l_partkey
+                  and o_orderkey = l_orderkey
+                  and s_nationkey = n_nationkey
+                  and p_type = #{partType}
+            ) as profit
+        group by
+            nation,
+            o_year
+        order by
+            nation,
+            o_year desc;
+    </select>
+</mapper>
+
+

@@ -16,4 +16,5 @@ public class UserLoginVO {
     private String username;
     private String name;
     private String token;
+    private Integer type;
 }

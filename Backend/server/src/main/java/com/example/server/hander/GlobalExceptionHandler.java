@@ -2,8 +2,9 @@ package com.example.server.hander;
 
 
 import com.example.commom.constant.MessageConstant;
+import com.example.commom.exception.BaseException;
+import com.example.commom.exception.DataValidationException;
 import com.example.commom.result.Result;
-import com.example.server.exception.BaseException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -24,7 +25,10 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler
     public Result exceptionHandler(BaseException ex){
-        log.error("异常信息：{}", ex.getMessage());
+        if (ex instanceof DataValidationException) {
+            throw ex; // 重新抛出后不会被此方法处理
+        }
+        log.error("异常信息：{}"+ex.getMessage());
         return Result.error(ex.getMessage());
     }
 
