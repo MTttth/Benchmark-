@@ -14,40 +14,17 @@
             <!-- <el-input v-model="searchText" placeholder="请输入要查询的对象" clearable />
             <el-button type="primary" @click="handleTextQuery">查询</el-button> -->
             <el-input
-             v-model="searchText"
-             placeholder="请输入要查询的对象"
+             v-model="cName"
+             placeholder="请输入查询客户姓名"
              clearable
              >
              <template #append>
               <el-button 
-              @click="handleTextQuery"
+              @click="handleUserInfoQuery"
               class="inline-btn"
               ><span class="inline-text">查询</span></el-button>
              </template>
             </el-input>
-          </div>
-
-          <div class="query-group">
-            <el-select 
-             v-model="selectedOption" 
-             placeholder="请选择要查询的对象" 
-             clearable
-             class="custom-select"
-             >
-              <el-option 
-               v-for="item in options" 
-               :key="item.value" 
-               :label="item.label" 
-               :value="item.value" />
-            </el-select>
-            <div class="inline-select">
-              <el-button 
-               type="primary" 
-               @click="handleSelectQuery"
-               class="select-inline-btn"
-              ><span class="inline-text">查询</span>
-              </el-button>
-            </div>
           </div>
         </div>
       </div>
@@ -78,28 +55,61 @@
       </el-card> -->
 
     <!-- 查询结果 -->
-    <div class="result-header">
+    <!-- <div class="result-header">
       <span class="title">客户查询结果</span>
-    </div>
+    </div> -->
     <div class="query-result">
-      <span class="result-title">查询结果</span>
-      <el-table :data="queryResults" class="result-table">
-        <el-table-column prop="key" label="客户key" />
-        <el-table-column prop="name" label="客户姓名" />
-        <el-table-column prop="address" label="客户地址" />     
-        <el-table-column prop="nationkey" lable="客户国家key" />   
-        <el-table-column prop="phone" label="客户电话" />
-        <el-table-column prop="acctbal" label="客户余额" />
-        <el-table-column prop="mktsegment" label="客户市场领域" />
-        <el-table-column prop="comment" label="备注" />
-      </el-table>
+      <div class="result-base">
+        <span class="result-titleBase">客户基础信息查询结果</span>
+        <div class="base-info-content">
+          <div class="info-item">
+            <span class="info-label">客户姓名：</span>
+            <span class="info-value">{{ customerInfo.UserInfoBase.cname || '暂无' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">联系电话：</span>
+            <span class="info-value">{{ customerInfo.UserInfoBase.phone || '暂无' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">联系地址：</span>
+            <span class="info-value">{{ customerInfo.UserInfoBase.address || '暂无' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">账户余额：</span>
+            <span class="info-value">{{ customerInfo.UserInfoBase.cacctbal || '暂无' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">市场领域</span>
+            <span class="info-value">{{ customerInfo.UserInfoBase.cmktsegment || '暂无' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">国家：</span>
+            <span class="info-value">{{ customerInfo.UserInfoBase.nationName || '暂无' }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="result-Order">
+        <span class="result-titleOrder">订单订单查询结果</span>
+        <el-table :data="customerInfo.orderInfos" class="result-table">
+          <el-table-column prop="oorderstatus" label="订单状态" />
+          <el-table-column prop="ototalprice" label="订单总价" />
+          <el-table-column prop="oorderdate" label="订单日期" />     
+          <el-table-column prop="oclerk" lable="收银员" />   
+          <el-table-column prop="ltex" label="税" />
+          <el-table-column prop="lreceiptdate" label="实际到达日期" />
+          <el-table-column prop="lquantity" label="商品数量" />
+          <el-table-column prop="lextendedprice" label="商品单价" />
+          <el-table-column prop="ldiscount" label="商品折扣" />
+        </el-table>
+      </div>
+      
       <div class="path-save">
         <span class="result-title path-title">选择保存路径</span>
         <el-button class="path-btn" @click="handleSelectPath">
           <span class="btn-path-title">路径选择</span>
         </el-button>
         <!-- 根据路径选择按钮的实现决定该按钮是否保留 -->
-        <!-- 若保留，则考虑在“其他信息查询”处复制一个相同的按钮 -->
+        <!-- 若保留，则考虑在"其他信息查询"处复制一个相同的按钮 -->
         <el-button class="inline-btn save-btn" @click="handleSave">
           <span class="inline-text">保存</span>
         </el-button>
@@ -129,30 +139,28 @@
     <el-card class="box-card">
       <div class="query-section">
         <div class="query-title">
-          <span class="title">其他信息查询</span>
+          <span class="title">地区订单收入量查询</span>
         </div>
         <div class="query-group">
-            <el-select 
-             v-model="selectedOption" 
-             placeholder="请选择要查询的对象" 
-             clearable
-             class="custom-select"
-             >
-              <el-option 
-               v-for="item in options" 
-               :key="item.value" 
-               :label="item.label" 
-               :value="item.value" />
-            </el-select>
-            <div class="inline-select">
-              <el-button 
-               type="primary" 
-               @click="handleSelectQuery"
-               class="select-inline-btn"
-              ><span class="inline-text">查询</span>
-              </el-button>
-            </div>
-          </div>
+          <el-input
+            v-model="rName"
+            placeholder="请输入查询国家"
+            clearable
+            >
+          </el-input>
+          <el-input
+            v-model="year"
+            placeholder="请输入查询年"
+            clearable
+            >
+            <template #append>
+            <el-button 
+            @click="handleNationInfo"
+            class="inline-btn"
+            ><span class="inline-text">查询</span></el-button>
+            </template>
+          </el-input>
+        </div>
         <!-- <div class="query-group">
           <el-select v-model="otherSelected" placeholder="请选择要查询的信息" clearable>
             <el-option v-for="item in otherOptions" :key="item.value" :label="item.label" :value="item.value" />
@@ -173,65 +181,164 @@
           </el-input>
         </div> -->
       </div>
+      <div class="nation-pie-chart" ref="nationPieChart"></div>
     </el-card>
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
+<script>
+import axios from 'axios';
+import * as echarts from 'echarts';
+export default {
+  data() {
+    return {
+      cName: '',
+      customerInfo: {
+        UserInfoBase: {},
+        orderInfos: [],
+      },
+      rName: '',
+      year: '',
+      nationRevs: []
+    }
+  },
+  watch: {
+    nationRevs(newVal) {
+      if (newVal && newVal.length > 0) {
+        this.$nextTick(() => {
+          this.renderNationPieChart();
+        });
+      }
+    }
+  },
+  mounted() {
 
+  },
+  methods: {
+    async handleUserInfoQuery() {
+      await axios.post('/api/data/getCustInfo', {
+        'cname': this.cName,
+      }).then(response => {
+        if(response.data.code == 1) {
+          this.customerInfo.UserInfoBase = response.data.data.userInfoBase;
+          this.customerInfo.orderInfos = response.data.data.orderInfos;
+          console.log(this.customerInfo.UserInfoBase);
+        }
+      });
+    },
+    async handleNationInfo(){
+      await axios.post('/api/data/getRegionRev',{
+        'rname': this.rName,
+        'date': this.year+'-01-01'
+      }).then(response => {
+        if(response.data.code == 1){
+          this.nationRevs = response.data.data.nationRevs;
+        }
+      })
+    },
+    renderNationPieChart() {
+      const chartDom = this.$refs.nationPieChart;
+      console.log(chartDom)
+      if (!chartDom) return;
+      const myChart = echarts.init(chartDom);
+      const option = {
+        title: {
+          text: '各国家订单收入占比',
+          left: 'center',
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b}: {c} ({d}%)'
+        },
+        legend: {
+          orient: 'vertical',
+          left: 'left'
+        },
+        series: [
+          {
+            name: '收入',
+            type: 'pie',
+            radius: '60%',
+            data: this.nationRevs.map(item => ({
+              value: item.revenue,
+              name: item.nname
+            })),
+            label: {
+              formatter: '{b}: {c}',
+              fontSize: 14
+            },
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      };
+      myChart.setOption(option);
+    }
+
+  }
+}
 // 客户查询相关数据
-const searchText = ref('')
-const selectedOption = ref('')
-const options = ref([
-  { value: '1', label: '按客户编号查询' },
-  { value: '2', label: '按客户级别查询' }
-])
+// const searchText = ref('')
+// const selectedOption = ref('')
+// const options = ref([
+//   { value: '1', label: '按客户编号查询' },
+//   { value: '2', label: '按客户级别查询' }
+// ])
 
-// 查询结果数据
-const queryResults = ref([
-  { name: '张三', phone: '13800138000', address: '北京市朝阳区' },
-  { name: '李四', phone: '13900139000', address: '上海市浦东新区' },
-  { name: '王五', phone: '13700137000', address: '广州市天河区'},
-  { name: '赵六', phone: '13600136000', address: '深圳市南山区'}
-])
+// // 查询结果数据
+// const queryResults = ref([
+//   { name: '张三', phone: '13800138000', address: '北京市朝阳区' },
+//   { name: '李四', phone: '13900139000', address: '上海市浦东新区' },
+//   { name: '王五', phone: '13700137000', address: '广州市天河区'},
+//   { name: '赵六', phone: '13600136000', address: '深圳市南山区'}
+// ])
 
-// 保存路径相关
-const savePath = ref('')
-const otherSavePath = ref('')
+// // 保存路径相关
+// const savePath = ref('')
+// const otherSavePath = ref('')
 
-// 其他信息查询
-const otherSelected = ref('')
-const otherOptions = ref([
-  { value: '1', label: '交易记录' },
-  { value: '2', label: '服务记录' }
-])
+// // 其他信息查询
+// const otherSelected = ref('')
+// const otherOptions = ref([
+//   { value: '1', label: '交易记录' },
+//   { value: '2', label: '服务记录' }
+// ])
 
-// 事件处理
-const handleTextQuery = () => {
-  console.log('文本查询:', searchText.value)
-}
+// // 事件处理
+// const async function handleTextQuery = () => {
+  
+//   console.log('文本查询:', searchText.value)
 
-const handleSelectQuery = () => {
-  console.log('选项查询:', selectedOption.value)
-}
+//   const response = await axios.post('/api/data/getCustInfo', {
+//     cName: this.selectedTable,
+//   });
+// }
 
-const handleSelectPath = () => {
-  // 这里需要实现路径选择逻辑，可能需要调用Electron对话框或使用第三方库
-  savePath.value = '/path/to/save'
-}
+// const handleSelectQuery = () => {
+//   console.log('选项查询:', selectedOption.value)
+// }
 
-const handleSave = () => {
-  console.log('保存到:111', savePath.value)
-}
+// const handleSelectPath = () => {
+//   // 这里需要实现路径选择逻辑，可能需要调用Electron对话框或使用第三方库
+//   savePath.value = '/path/to/save'
+// }
 
-const handleOtherQuery = () => {
-  console.log('其他信息查询:', otherSelected.value)
-}
+// const handleSave = () => {
+//   console.log('保存到:111', savePath.value)
+// }
 
-const handleOtherPath = () => {
-  otherSavePath.value = '/other/path'
-}
+// const handleOtherQuery = () => {
+//   console.log('其他信息查询:', otherSelected.value)
+// }
+
+// const handleOtherPath = () => {
+//   otherSavePath.value = '/other/path'
+// }
 </script>
 
 <style scoped>
@@ -242,7 +349,9 @@ const handleOtherPath = () => {
 .container {
   background-color: #6CBBB6;
   height: 90vh;
-  overflow: hidden !important;
+  /* overflow: hidden !important; */
+  overflow-y: auto;       /* 竖向出现滚动条 */
+  overflow-x: hidden;
 }
 
 /* 卡片内边距调整 */
@@ -264,7 +373,14 @@ const handleOtherPath = () => {
   padding-left: 10px;
   /* 与左边间距：20+20+10=50 */
 }
-
+.nation-pie-chart{
+  height: 800px;
+  width: 800px;
+  /* background-color: #000; */
+  margin-top: 24px; 
+  margin: 24px auto 0 auto;
+  display: block;
+}
 .query-title {
  text-align: left; 
 }
@@ -427,7 +543,7 @@ const handleOtherPath = () => {
   box-sizing: border-box;;
   margin-left:50px;
   margin-top: 20px;
-  height:285px;
+  /* height:600px; */
   width:1200px;
   background-color: #BCBCBC;
   /* padding-top:50px; */
@@ -439,12 +555,56 @@ const handleOtherPath = () => {
   border: 4px solid #A9AFB1!important;
   border-radius: 10px 10px 10px 10px!important;
 }
-
-.result-title {
+.result-base{
+  width: 1170px;
+  /* height: 300px; */
+  border-radius: 10px 10px 10px 10px!important;
+}
+.result-titleBase {
   font-size: 25px;
   color: #000;
   font-weight: bolder;
-  position:absolute;
+  display: block;
+  margin-bottom: 15px;
+}
+.base-info-content {
+  position:relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  background-color: #FFFFFF; 
+  padding: 10px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.info-label {
+  font-size: 18px;
+  color: #666;
+  font-weight: bold;
+  min-width: 80px;
+}
+
+.info-value {
+  font-size: 18px;
+  color: #333;
+}
+
+.result-Order{
+  width: 1170px;
+  height: 300px;
+  position:relative;
+}
+
+.result-titleOrder {
+  font-size: 25px;
+  color: #000;
+  font-weight: bolder;
+  /* position:absolute; */
   top:5px;
   left:5px;
 }
