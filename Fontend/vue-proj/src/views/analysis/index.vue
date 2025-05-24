@@ -3,36 +3,22 @@
         <h1 class="header">TPC-H统计分析</h1>
         
         <el-form :model="form" label-width="160px" class="query-form">
-            <!-- 日期范围选择 -->
-            <el-form-item label="请选择日期" class="date-label">
-                <div class="date-container">
-                    <el-date-picker 
-                     popper-class="elDatePicker"
-                     v-model="form.dateRange" 
-                     type="daterange" 
-                     range-separator="~" 
-                     start-placeholder="开始日期"
-                     end-placeholder="结束日期" 
-                     format="yyyy-MM-dd" 
-                     value-format="yyyy-MM-dd" />
-                </div>
-            </el-form-item>
 
             <!-- 国家/地区选择 -->
-            <el-form-item label="请选择国家/地区">
+            <el-form-item label="请选择查询零件类型">
                 <div class="date-container">
                     <el-select 
                      class="country-select"
-                     v-model="form.country" 
+                     v-model="form.parttpye" 
                      placeholder="请选择" 
                      clearable 
                      filterable 
                     >
-                        <el-option 
-                         v-for="item in countries" 
-                         :key="item.value" 
-                         :label="item.label" 
-                         :value="item.value" />
+                    <el-option 
+                      v-for="item in partTpye" 
+                      :key="item" 
+                      :label="item" 
+                      :value="item" />
                 </el-select>
                 </div>
             </el-form-item>
@@ -49,39 +35,68 @@
 
         <!-- 业务执行情况 -->
         <div class="business-section">
-            <h3 class="process-title">业务执行情况</h3>
-            <div class="placeholder-content">
-                <!-- 这里可以放置表格/图表等具体内容 -->
-                <el-empty description="暂无数据" />
-                <el-empty description="暂无数据" />
-                <el-empty description="暂无数据" />
-                <el-empty description="暂无数据" />
+            <div class="process-header">
+                <h3 class="process-title">业务执行情况</h3>
+                <span class="exec-time">执行时长：{{ execTime || '--' }} ms</span>
+            </div>
+            <div class="result-Order">
+              <span class="result-titleOrder">查询结果</span>
+              <el-table :data="profitData" class="result-table">
+                <el-table-column class="table-item" prop="nation" label="国家" />
+                <el-table-column class="table-item" prop="oyear" label="年份" />
+                <el-table-column class="table-item" prop="sumProfit" label="总利润" />     
+              </el-table>
+            </div>
+            <div class="result-Order">
+                <div class="result-titleOrder">执行计划</div>
+                <el-table :data="explain" class="result-table">
+                  <el-table-column class="table-item" prop="selectType" label="操作类型" />
+                  <el-table-column class="table-item" prop="table" label="表" />
+                  <el-table-column class="table-item" prop="type" label="类型" />     
+                  <el-table-column class="table-item" prop="key" label="键" />
+                  <el-table-column class="table-item" prop="ref" label="引用" />
+                  <el-table-column class="table-item" prop="rows" label="扫描行数" />      
+                </el-table>
             </div>
         </div>
+        <div class="padding">
 
+        </div>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     data() {
         return {
             form: {
-                dateRange: [],
-                country: ''
+                parttpye: ''
             },
-            countries: [
-                { value: 'cn', label: '中国' },
-                { value: 'us', label: '美国' },
-                { value: 'jp', label: '日本' }
-            ]
+            partTpye: [],
+            execTime: 0.0,
+            explain: [],
+            profitData: []
         }
     },
     methods: {
-        handleQuery() {
-            console.log('查询参数：', this.form)
-            // 这里添加实际查询逻辑
+        async handleQuery() {
+          await axios.post('/api/data/analysisData',this.form).then(response => {
+            if(response.data.code == 1){
+              this.profitData = response.data.data.nationProfits
+              this.execTime = response.data.data.time
+              this.explain = response.data.data.explianPlans
+              console.log(this.profitData)
+            }
+          })
         },
+    },
+    mounted(){
+      axios.get('/api/data/getAllPartType').then(response => {
+        if(response.data.code == 1){
+          this.partTpye = response.data.data
+        }
+      })
     }
 }
 </script>
@@ -91,6 +106,7 @@ export default {
 .tpc-container {
   padding: 20px;
   margin: 0 auto;
+  overflow-y: auto;  
   min-height: 90vh; /* 改为最小高度 */
   background-color: #6CBBB6;
   position: relative; /* 创建定位上下文 */
@@ -109,7 +125,7 @@ export default {
 
 .query-form {
   width: 550px;
-  min-height: 230px; /* 允许高度扩展 */
+  min-height: 150px; /* 允许高度扩展 */
   margin: -7px 0 30px 50px; 
   background: #BCBCBC;
   /* padding: 20px; */
@@ -121,10 +137,11 @@ export default {
 }
 
 .business-section {
-  position: absolute;
-  left:700px; 
+  position: relative;
+  /* left:700px;  */
   top: 80px;
-  width: 600px;
+  width: 1200px;
+  margin: 0 auto;
   height: 750px; 
   padding: 20px;
   border: 4px solid #A9AFB1;
@@ -158,9 +175,10 @@ export default {
 
 .process-title {
   color: #333;
-  font-size: 20px;
+  font-size: 30px;
   font-weight: bolder;
-  margin: -5px 200px 5px -220px; 
+  /* margin: -5px 200px 5px -220px;  */
+  margin: 0 auto;
 }
 
 .placeholder-content {
@@ -201,5 +219,74 @@ export default {
 :global(*::before),
 :global(*::after) {
   box-sizing: inherit;
+}
+
+.process-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.exec-time {
+  font-size: 18px;
+  color: #666;
+  font-weight: normal;
+}
+
+.result-Order{
+  width: 1170px;
+  height: 300px;
+  position:relative;
+}
+
+.result-titleOrder {
+  font-size: 25px;
+  color: #000;
+  font-weight: bolder;
+  top:15px;
+  left:5px;
+}
+
+.result-table {
+  position: relative;
+  top: 20px;
+  left: 10px;
+  width:1140px;
+  height:200px;
+  background-color: #FFFFFF; 
+  border-radius: 10px 10px 10px 10px!important;
+  overflow:auto;
+  border-bottom: none!important;
+  border-color: transparent!important;
+}
+/* .table-item{
+  font-size: 15px;
+} */
+.plan-card {
+  /* margin-top: 10px; */
+  /* background: #f8f8f8; */
+  border-radius: 8px;
+  padding: 16px 22px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  width: 100%;
+}
+
+.plan-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.plan-content {
+  font-size: 15px;
+  color: #444;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 0;
+}
+.padding{
+  height: 100px;
 }
 </style>
