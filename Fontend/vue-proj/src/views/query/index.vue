@@ -104,13 +104,13 @@
       </div>
       
       <div class="path-save">
-        <span class="result-title path-title">选择保存路径</span>
+        <!-- <span class="result-title path-title">选择保存路径</span>
         <el-button class="path-btn" @click="handleSelectPath">
           <span class="btn-path-title">路径选择</span>
-        </el-button>
+        </el-button> -->
         <!-- 根据路径选择按钮的实现决定该按钮是否保留 -->
         <!-- 若保留，则考虑在"其他信息查询"处复制一个相同的按钮 -->
-        <el-button class="inline-btn save-btn" @click="handleSave">
+        <el-button class="inline-btn save-btn" @click="handleUserDateSave">
           <span class="inline-text">保存</span>
         </el-button>
       </div>
@@ -168,9 +168,8 @@
           <el-button type="primary" @click="handleOtherQuery">查询</el-button>
         </div> -->
         <div class="path-save other-save">
-          <span class="title">选择保存路径</span>
         <el-button class="path-btn other-btn" @click="handleSelectPath">
-          <span class="btn-path-title">路径选择</span>
+          <span class="btn-path-title">保存</span>
         </el-button>
         </div>
         <!-- <div class="save-path">
@@ -278,8 +277,128 @@ export default {
         ]
       };
       myChart.setOption(option);
+    },
+    exportUserBaseData() {
+      // 获取数据
+      const jsonData = this.customerInfo.UserInfoBase;
+      
+      // 将JSON转换为CSV格式
+      let csvContent = '';
+        // 单个对象情况
+      const headers = Object.keys(jsonData);
+      csvContent += headers.join(',') + '\n';
+      
+      const values = headers.map(header => {
+        let cell = jsonData[header]?.toString() || '';
+        if (cell.includes(',') || cell.includes('"') || cell.includes('\n')) {
+          cell = `"${cell.replace(/"/g, '""')}"`;
+        }
+        return cell;
+      });
+      csvContent += values.join(',') + '\n';
+      
+      // 创建Blob对象，使用正确的MIME类型
+      const blob = new Blob([csvContent], {type: 'text/csv;charset=utf-8;'});
+      
+      // 创建下载链接
+      const url = URL.createObjectURL(blob);
+      
+      // 创建一个临时链接并触发下载
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'userBaseData.csv'; // 更改扩展名为.csv
+      document.body.appendChild(link);
+      link.click();
+      
+      // 清理
+      URL.revokeObjectURL(url);
+      document.body.removeChild(link);
+    },
+    exportUserOrderData() {
+      // 获取数据
+      const jsonData = this.customerInfo.orderInfos;
+      
+      // 将JSON转换为CSV格式
+      let csvContent = '';
+      // 数组情况：使用第一个对象的键作为表头
+      const headers = Object.keys(jsonData[0]);
+      csvContent += headers.join(',') + '\n';
+      
+      // 添加数据行
+      jsonData.forEach(item => {
+        const row = headers.map(header => {
+          // 处理逗号、引号等特殊字符
+          let cell = item[header]?.toString() || '';
+          if (cell.includes(',') || cell.includes('"') || cell.includes('\n')) {
+            cell = `"${cell.replace(/"/g, '""')}"`;
+          }
+          return cell;
+        });
+        csvContent += row.join(',') + '\n';
+      });
+      // 创建Blob对象，使用正确的MIME类型
+      const blob = new Blob([csvContent], {type: 'text/csv;charset=utf-8;'});
+      
+      // 创建下载链接
+      const url = URL.createObjectURL(blob);
+      
+      // 创建一个临时链接并触发下载
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'userOrderData.csv'; // 更改扩展名为.csv
+      document.body.appendChild(link);
+      link.click();
+      
+      // 清理
+      URL.revokeObjectURL(url);
+      document.body.removeChild(link);
+    },
+    exportRegionRevsData() {
+      // 获取数据
+      const jsonData = this.nationRevs;
+      
+      // 将JSON转换为CSV格式
+      let csvContent = '';
+      // 数组情况：使用第一个对象的键作为表头
+      const headers = Object.keys(jsonData[0]);
+      csvContent += headers.join(',') + '\n';
+      
+      // 添加数据行
+      jsonData.forEach(item => {
+        const row = headers.map(header => {
+          // 处理逗号、引号等特殊字符
+          let cell = item[header]?.toString() || '';
+          if (cell.includes(',') || cell.includes('"') || cell.includes('\n')) {
+            cell = `"${cell.replace(/"/g, '""')}"`;
+          }
+          return cell;
+        });
+        csvContent += row.join(',') + '\n';
+      });
+      // 创建Blob对象，使用正确的MIME类型
+      const blob = new Blob([csvContent], {type: 'text/csv;charset=utf-8;'});
+      
+      // 创建下载链接
+      const url = URL.createObjectURL(blob);
+      
+      // 创建一个临时链接并触发下载
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = this.rName + 'NationRevs.csv'; // 更改扩展名为.csv
+      document.body.appendChild(link);
+      link.click();
+      
+      // 清理
+      URL.revokeObjectURL(url);
+      document.body.removeChild(link);
+    },
+    handleUserDateSave(){
+      this.exportUserBaseData();
+      this.exportUserOrderData();
+    },
+    handleSelectPath(){
+      this.exportRegionRevsData();
     }
-
   }
 }
 // 客户查询相关数据
@@ -614,7 +733,7 @@ export default {
   top: 50px;
   left: 10px;
   width:1170px;
-  height:165px;
+  height:200px;
   background-color: #FFFFFF; 
   border-radius: 10px 10px 10px 10px!important;
   overflow:auto;
