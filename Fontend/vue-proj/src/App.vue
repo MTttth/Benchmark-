@@ -11,7 +11,7 @@ export default {
     // 禁止键盘事件 (Ctrl + +/-/0)
     document.addEventListener('keydown', this.handleKeyDown)
     // 禁止 Ctrl + 鼠标滚轮
-    document.addEventListener('wheel', this.handleWheel, { passive: false })
+    // document.addEventListener('wheel', this.handleWheel, { passive: false })
   },
   beforeDestroy() {
     document.removeEventListener('keydown', this.handleKeyDown)
