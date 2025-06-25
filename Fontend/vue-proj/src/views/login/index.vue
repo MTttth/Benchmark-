@@ -28,7 +28,7 @@
         </div>
 
         <!-- 登录按钮 -->
-        <button type="submit" class="submit-btn" @click="handleLogin">
+        <button type="button" class="submit-btn" @click="handleLogin">
           Sign in
         </button>
       </form>
