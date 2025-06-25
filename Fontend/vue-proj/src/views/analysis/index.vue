@@ -19,7 +19,7 @@
                       :key="item" 
                       :label="item" 
                       :value="item" />
-                </el-select>
+                    </el-select>
                 </div>
             </el-form-item>
             <!-- 查询按钮 -->

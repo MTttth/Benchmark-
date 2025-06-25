@@ -15,7 +15,6 @@
             <el-button type="primary" @click="handleTextQuery">查询</el-button> -->
             <el-input
              v-model="cName"
-             placeholder="请输入查询客户姓名"
              clearable
              >
              <template #append>
@@ -142,12 +141,25 @@
           <span class="title">地区订单收入量查询</span>
         </div>
         <div class="query-group">
-          <el-input
+          <!-- <el-input
             v-model="rName"
             placeholder="请输入查询国家"
             clearable
             >
-          </el-input>
+          </el-input> -->
+          <el-select 
+            class="country-select"
+            v-model="rName" 
+            placeholder="请输入查询国家" 
+            clearable 
+            filterable 
+          >
+          <el-option 
+            v-for="item in nations" 
+            :key="item" 
+            :label="item" 
+            :value="item" />
+          </el-select>
           <el-input
             v-model="year"
             placeholder="请输入查询年"
@@ -191,14 +203,15 @@ import * as echarts from 'echarts';
 export default {
   data() {
     return {
-      cName: '',
+      cName: 'Customer#000000001',
       customerInfo: {
         UserInfoBase: {},
         orderInfos: [],
       },
       rName: '',
       year: '',
-      nationRevs: []
+      nationRevs: [],
+      nations:['AFRICA','AMERICA','ASIA','EUROPE','MIDDLE EAST']
     }
   },
   watch: {
